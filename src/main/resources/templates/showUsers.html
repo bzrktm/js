@@ -9,12 +9,11 @@
 <hr>
 <table border="1">
     <tr>
-        <th>id</th>
-        <th>name</th>
-        <th>last name</th>
-        <th>age</th>
-        <th>username</th>
-        <th>password</th>
+        <th>ID</th>
+        <th>First name</th>
+        <th>Last name</th>
+        <th>Age</th>
+        <th>Email</th>
         <th>role</th>
         <th>option</th>
     </tr>
@@ -23,11 +22,10 @@
         <td>
             <a th:href="@{/admin/{id}(id=${user.getId()})}" th:text="${user.getId()}"></a>
         </td>
-        <td th:text="${user.getName()}"/>
+        <td th:text="${user.getFirstname()}"/>
         <td th:text="${user.getLastname()}"/>
         <td th:text="${user.getAge()}"/>
         <td th:text="${user.getUsername()}"/>
-        <td th:text="${user.getPassword()}"/>
         <td th:text="${user.rolesToString()}"/>
         <td>
             <button name="id" th:value="${user.getId()}">
