@@ -52,12 +52,14 @@ public class UserServiceImp implements UserService{
     }
 
     @Override
+    @Transactional
     public void updateUserById(Long id, User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
     }
 
     @Override
+    @Transactional
     public void deleteById(Long id) {
         userRepository.deleteById(id);
     }
