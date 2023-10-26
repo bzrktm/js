@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>User</title>
+</head>
+<body>
+<p th:text="'id: ' + ${usersId.getId()}">VALUE</p>
+<p th:text="'Name: ' + ${usersId.getName()}">VALUE</p>
+<p th:text="'Last Name: ' + ${usersId.getLastname()}">VALUE</p>
+<p th:text="'Age: ' + ${usersId.getAge()}">VALUE</p>
+<p th:text="'Username: ' + ${usersId.getUsername()}">VALUE</p>
+<p th:text="'Password: ' + ${usersId.getPassword()}">VALUE</p>
+<p th:text="'Role: ' + ${usersId.rolesToString()}">VALUE</p>
+
+<input type="button" value="Go back" onclick="location.href='/admin'">
+</body>
+</html>
