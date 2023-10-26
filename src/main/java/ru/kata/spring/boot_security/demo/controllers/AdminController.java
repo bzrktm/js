@@ -59,7 +59,7 @@ public class AdminController {
 
     @PatchMapping("/{id}")
     public String updateUser(@PathVariable("id") Long id, @ModelAttribute("user") @Valid User user, BindingResult bindingResult) {
-        if(bindingResult.hasErrors()) {
+        if (bindingResult.hasErrors()) {
             return "updateUser";
         } else {
             userService.updateUserById(id, user);

@@ -61,7 +61,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
 
-
 ////     аутентификация inMemory
 //    @Bean
 //    @Override
@@ -80,7 +79,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //                        .build();
 //        return new InMemoryUserDetailsManager(user, admin);
 //    }
-
 
 
 }

@@ -13,7 +13,7 @@ import ru.kata.spring.boot_security.demo.repositories.UserRepository;
 import java.util.List;
 
 @Service
-public class UserServiceImp implements UserService{
+public class UserServiceImp implements UserService {
 
     private UserRepository userRepository;
     private RoleRepository roleRepository;
