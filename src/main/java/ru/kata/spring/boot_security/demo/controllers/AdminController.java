@@ -10,6 +10,7 @@ import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.service.UserService;
 
 import javax.validation.Valid;
+import java.security.Principal;
 import java.util.List;
 
 @Controller
@@ -24,47 +25,43 @@ public class AdminController {
     }
 
     @GetMapping
-    public String showUsers(Model model) {
+    public String showUsers(Model model, Principal principal) {
         model.addAttribute("users", userService.showUsers());
-        return "showUsers";
+        model.addAttribute("username", principal.getName());
+        model.addAttribute("userThis", userService.findByUsername(principal.getName()));
+        model.addAttribute("roles", userService.findRoles());
+        return "admin";
     }
 
     @GetMapping("/{id}")
     public String showById(@PathVariable("id") Long id, Model model) {
         model.addAttribute("usersId", userService.findUserById(id));
-        return "userId";
+        return "/admin";
     }
 
     @GetMapping("/new")
     public String newUser(@ModelAttribute("user") User user, Model model) {
         model.addAttribute("roles", userService.findRoles());
-        return "newUser";
+        return "admin";
     }
 
     @PostMapping
     public String create(@ModelAttribute("user") @Valid User user, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            return "newUser";
-        }
         userService.saveUser(user);
         return "redirect:/admin";
     }
 
     @GetMapping("/{id}/update")
-    public String editUser(@PathVariable("id") Long id, Model model) {
+    public String editUser(@PathVariable("id") Long id, Model model, Principal principal) {
         model.addAttribute("roles", userService.findRoles());
         model.addAttribute("user", userService.findUserById(id));
-        return "updateUser";
+        return "/admin";
     }
 
     @PatchMapping("/{id}")
     public String updateUser(@PathVariable("id") Long id, @ModelAttribute("user") @Valid User user, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            return "updateUser";
-        } else {
             userService.updateUserById(id, user);
             return "redirect:/admin";
-        }
     }
 
     @DeleteMapping("/{id}")

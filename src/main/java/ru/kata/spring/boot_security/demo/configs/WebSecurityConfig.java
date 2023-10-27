@@ -13,6 +13,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 @EnableWebSecurity
@@ -35,15 +36,19 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                 .antMatchers("/", "/index").permitAll()
-                .antMatchers("/authenticated/**").authenticated()
                 .antMatchers("/admin/**").hasRole("ADMIN")
                 .antMatchers("/user/**").hasAnyRole("USER", "ADMIN")
                 .anyRequest().authenticated()
                 .and()
-                .formLogin().successHandler(successUserHandler)
+                .formLogin()
+                .loginPage("/login").loginProcessingUrl("/login")
+                .successHandler(successUserHandler)
                 .permitAll()
                 .and()
                 .logout()
+                .logoutUrl("/logout") // Указываем путь для logout
+                .logoutRequestMatcher(new AntPathRequestMatcher("/logout", "GET"))
+                .logoutSuccessUrl("/login") // Указываем URL для перенаправления после выхода
                 .permitAll();
     }
 
