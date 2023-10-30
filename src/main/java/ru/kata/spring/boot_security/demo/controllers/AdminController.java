@@ -46,13 +46,13 @@ public class AdminController {
     }
 
     @PostMapping
-    public String create(@ModelAttribute("user") @Valid User user, BindingResult bindingResult) {
+    public String create(@ModelAttribute("user") @Valid User user) {
         userService.saveUser(user);
         return "redirect:/admin";
     }
 
     @GetMapping("/{id}/update")
-    public String editUser(@PathVariable("id") Long id, Model model, Principal principal) {
+    public String editUser(@PathVariable("id") Long id, Model model) {
         model.addAttribute("roles", userService.findRoles());
         model.addAttribute("user", userService.findUserById(id));
         return "/admin";
