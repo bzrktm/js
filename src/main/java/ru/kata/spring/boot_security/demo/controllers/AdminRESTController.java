@@ -35,7 +35,7 @@ public class AdminRESTController {
         return ResponseEntity.ok(userService.findUserById(id));
     }
 
-    @PostMapping("/users")
+    @PostMapping("/new/users")
     public ResponseEntity<HttpStatus> newUser(@RequestBody User user) {
         userService.saveUser(user);
         return ResponseEntity.ok(HttpStatus.OK);

@@ -1,7 +1,7 @@
 const userListUrl = 'http://localhost:8080/api/admin';
 const userUrl = 'http://localhost:8080/active/user'
 const rolesListUrl = 'http://localhost:8080/api/roles'
-const createUserUrl = 'http://localhost:8080/api/users';
+const createUserUrl = 'http://localhost:8080/api/new/users';
 let role;
 let output = '';
 
@@ -40,10 +40,39 @@ const listAllUsers = (users) => {
     usersTable.innerHTML = output;
 }
 
+// function updateTable(user) {
+//     const table = document.getElementById('users-table');
+//     const newRow = table.insertRow();
+//
+//     const firstnameCell = newRow.insertCell();
+//     firstnameCell.textContent = user.firstname;
+//     const lastnameCell = newRow.insertCell();
+//     lastnameCell.textContent = user.lastname;
+//     const ageCell = newRow.insertCell();
+//     ageCell.textContent = user.age;
+//     const usernameCell = newRow.insertCell();
+//     usernameCell.textContent = user.username
+//     role = '';
+//     if (user.roles) {
+//         user.roles.forEach((r) => role += r.name.substring(5) + " ")
+//     }
+//     const roleCell = newRow.insertCell()
+//     roleCell.textContent = role;
+//     const actionsCell = newRow.insertCell();
+//     const editButton = document.createElement('button');
+//     editButton.textContent = 'Edit';
+//     actionsCell.appendChild(editButton);
+//     const actionCellDel = newRow.insertCell();
+//     const deleteButton = document.createElement('button')
+//     deleteButton.textContent = 'Delete'
+//     actionCellDel.appendChild(deleteButton)
+//
+// }
+
 
 fetch(userUrl)
     .then(r => r.json())
-    .then(data => userTable(data))
+    .then(data => userTable(data,))
 
 const userInfoAdmin = document.getElementById('about-user')
 let userInfoOutput = '';
@@ -228,6 +257,14 @@ createUserForm.addEventListener('submit', (e) => {
             });
         }
     }
+    const user = {
+        firstname: firstnameById.value,
+        lastname: lastnameById.value,
+        age: ageById.value,
+        username: usernameById.value,
+        password: passwordById.value,
+        roles: roles
+    };
 
     fetch(createUserUrl, {
         method: 'POST',
@@ -246,7 +283,16 @@ createUserForm.addEventListener('submit', (e) => {
         .then(res => res.json())
         .then(data => {
             const dataArr = []
-            dataArr.push(data)
+            // const id = data.id
+            // dataArr.push(id)
+            dataArr.push ({
+                id : data.id,
+                firstname : data.firstname,
+                lastname : data.lastname,
+                age : data.age,
+                username : data.username,
+                role : data.roles
+            })
             listAllUsers(dataArr)
             createUserForm.reset()
             $('[href="#nav-home"]').tab('show');
