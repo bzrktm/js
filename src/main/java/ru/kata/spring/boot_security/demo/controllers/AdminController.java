@@ -3,7 +3,6 @@ package ru.kata.spring.boot_security.demo.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.service.UserService;
@@ -57,9 +56,9 @@ public class AdminController {
     }
 
     @PatchMapping("/{id}")
-    public String updateUser(@PathVariable("id") Long id, @ModelAttribute("user") @Valid User user, BindingResult bindingResult) {
-            userService.updateUserById(id, user);
-            return "redirect:/admin";
+    public String updateUser(@PathVariable("id") Long id, @ModelAttribute("user") @Valid User user) {
+        userService.updateUserById(id, user);
+        return "redirect:/admin";
     }
 
     @DeleteMapping("/{id}")

@@ -47,7 +47,7 @@ public class UserServiceImp implements UserService {
     @Override
     @Transactional
     public void saveUser(User user) {
-        if (userRepository.findAll().stream().map(User::getUsername).anyMatch(u->u.equals(user.getUsername()))) {
+        if (userRepository.findAll().stream().map(User::getUsername).anyMatch(u -> u.equals(user.getUsername()))) {
             throw new RuntimeException("Такая почта уже существует");
         } else {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -58,7 +58,7 @@ public class UserServiceImp implements UserService {
     @Override
     @Transactional
     public void updateUserById(Long id, User user) {
-        if(!userRepository.findUserById(id).getPassword().equals(user.getPassword()) && !user.getPassword().isEmpty() ) {
+        if (!userRepository.findUserById(id).getPassword().equals(user.getPassword()) && !user.getPassword().isEmpty()) {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
             userRepository.save(user);
         } else {

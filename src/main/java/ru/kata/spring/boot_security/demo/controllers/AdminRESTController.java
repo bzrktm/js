@@ -31,24 +31,24 @@ public class AdminRESTController {
     }
 
     @GetMapping("/users/{id}")
-    public ResponseEntity<User> getUser(@PathVariable ("id") Long id) {
+    public ResponseEntity<User> getUser(@PathVariable("id") Long id) {
         return ResponseEntity.ok(userService.findUserById(id));
     }
 
     @PostMapping("/new/users")
-    public ResponseEntity<HttpStatus> newUser(@RequestBody User user) {
+    public ResponseEntity<User> newUser(@RequestBody User user) {
         userService.saveUser(user);
-        return ResponseEntity.ok(HttpStatus.OK);
+        return ResponseEntity.ok(user);
     }
 
     @PatchMapping("/users/{id}")
-    public ResponseEntity<HttpStatus> updateUser(@RequestBody User user, @PathVariable ("id") Long id) {
+    public ResponseEntity<HttpStatus> updateUser(@RequestBody User user, @PathVariable("id") Long id) {
         userService.updateUserById(id, user);
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
     @DeleteMapping("/users/{id}")
-    public ResponseEntity<HttpStatus> deleteUser(@PathVariable ("id") Long id) {
+    public ResponseEntity<HttpStatus> deleteUser(@PathVariable("id") Long id) {
         userService.deleteById(id);
         return ResponseEntity.ok(HttpStatus.OK);
     }

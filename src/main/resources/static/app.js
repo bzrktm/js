@@ -5,7 +5,6 @@ const createUserUrl = 'http://localhost:8080/api/new/users';
 let role;
 let output = '';
 
-
 fetch(userListUrl)
     .then(r => r.json())
     .then(data => listAllUsers(data))
@@ -40,36 +39,6 @@ const listAllUsers = (users) => {
     usersTable.innerHTML = output;
 }
 
-// function updateTable(user) {
-//     const table = document.getElementById('users-table');
-//     const newRow = table.insertRow();
-//
-//     const firstnameCell = newRow.insertCell();
-//     firstnameCell.textContent = user.firstname;
-//     const lastnameCell = newRow.insertCell();
-//     lastnameCell.textContent = user.lastname;
-//     const ageCell = newRow.insertCell();
-//     ageCell.textContent = user.age;
-//     const usernameCell = newRow.insertCell();
-//     usernameCell.textContent = user.username
-//     role = '';
-//     if (user.roles) {
-//         user.roles.forEach((r) => role += r.name.substring(5) + " ")
-//     }
-//     const roleCell = newRow.insertCell()
-//     roleCell.textContent = role;
-//     const actionsCell = newRow.insertCell();
-//     const editButton = document.createElement('button');
-//     editButton.textContent = 'Edit';
-//     actionsCell.appendChild(editButton);
-//     const actionCellDel = newRow.insertCell();
-//     const deleteButton = document.createElement('button')
-//     deleteButton.textContent = 'Delete'
-//     actionCellDel.appendChild(deleteButton)
-//
-// }
-
-
 fetch(userUrl)
     .then(r => r.json())
     .then(data => userTable(data,))
@@ -95,56 +64,53 @@ const userTable = (user) => {
 }
 
 usersTable.addEventListener('click', (e) => {
-   e.preventDefault()
-       if (e.target.id === 'editButton') {
-            fetch(`http://localhost:8080/api/users/${e.target.dataset.uid}`)
-                .then(res => res.json())
-                .then(data => {
-                    $('#idEdit').val(data.id)
-                    $('#firstnameEdit').val(data.firstname)
-                    $('#lastnameEdit').val(data.lastname)
-                    $('#ageEdit').val(data.age)
-                    $('#usernameEdit').val(data.username)
-                    $('#passwordEdit').val(data.password)
+    e.preventDefault()
+    if (e.target.id === 'editButton') {
+        fetch(`http://localhost:8080/api/users/${e.target.dataset.uid}`)
+            .then(res => res.json())
+            .then(data => {
+                $('#idEdit').val(data.id)
+                $('#firstnameEdit').val(data.firstname)
+                $('#lastnameEdit').val(data.lastname)
+                $('#ageEdit').val(data.age)
+                $('#usernameEdit').val(data.username)
 
-                    const xhr2 = new XMLHttpRequest();
-                    xhr2.open('GET', rolesListUrl);
-                    xhr2.onreadystatechange = () => {
-                        if (xhr2.readyState === XMLHttpRequest.DONE) {
-                            if (xhr2.status === 200) {
-                                const data = JSON.parse(xhr2.responseText);
-                                let options = '';
-                                for (const {id, name} of data) {
-                                    options += `<option value="${id}">${name}</option>`;
-                                }
-                                selectRoleForm.innerHTML = options;
-                                $('#rolesEdit').html(options);
-                                $('#editModal').modal();
-                            } else {
-                                console.error('Error:', xhr2.status);
+                const xhr2 = new XMLHttpRequest();
+                xhr2.open('GET', rolesListUrl);
+                xhr2.onreadystatechange = () => {
+                    if (xhr2.readyState === XMLHttpRequest.DONE) {
+                        if (xhr2.status === 200) {
+                            const data = JSON.parse(xhr2.responseText);
+                            let options = '';
+                            for (const {id, name} of data) {
+                                options += `<option value="${id}">${name}</option>`;
                             }
+                            selectRoleForm.innerHTML = options;
+                            $('#rolesEdit').html(options);
+                            $('#editModal').modal();
+                        } else {
+                            console.error('Error:', xhr2.status);
                         }
+                    }
 
-                    };
-                    xhr2.send();
-                });
-       } else if (e.target.id === 'deleteButton') {
-           fetch(`http://localhost:8080/api/users/${e.target.dataset.uid}`)
-               .then(res => res.json())
-               .then(data => {
-                   role='';
-                   data.roles.forEach((r) => role += r.name.substring(5) + " ")
-                   $('#idDelete').val(data.id)
-                   $('#firstnameDelete').val(data.firstname)
-                   $('#lastnameDelete').val(data.lastname)
-                   $('#ageDelete').val(data.age)
-                   $('#usernameDelete').val(data.username)
-                   $('#passwordDelete').val(data.password)
-                   $('#rolesDelete').val(role)
-
-                   $('#deleteModal').modal()
-               });
-       }
+                };
+                xhr2.send();
+            });
+    } else if (e.target.id === 'deleteButton') {
+        fetch(`http://localhost:8080/api/users/${e.target.dataset.uid}`)
+            .then(res => res.json())
+            .then(data => {
+                role = '';
+                data.roles.forEach((r) => role += r.name.substring(5) + " ")
+                $('#idDelete').val(data.id)
+                $('#firstnameDelete').val(data.firstname)
+                $('#lastnameDelete').val(data.lastname)
+                $('#ageDelete').val(data.age)
+                $('#usernameDelete').val(data.username)
+                $('#rolesDelete').val(role)
+                $('#deleteModal').modal()
+            });
+    }
 });
 
 const editModalForm = document.getElementById('editModalForm')
@@ -186,7 +152,7 @@ editModalForm.addEventListener('submit', (e) => {
         body: JSON.stringify(requestBody)
     })
         .then(res => console.log(res))
-        .then((res) => {
+        .then(() => {
             $('#editModal').modal('hide')
 
             output = '';
@@ -204,7 +170,7 @@ deleteModalForm.addEventListener('submit', (e) => {
         method: 'DELETE'
     })
         .then(res => console.log(res))
-        .then((res) => {
+        .then(() => {
             $('#deleteModal').modal('hide')
             output = ''
             fetch(userListUrl)
@@ -216,6 +182,7 @@ deleteModalForm.addEventListener('submit', (e) => {
 
 const selectRoleForm = document.getElementById('roles');
 loadRoles()
+
 function loadRoles() {
     const xhr = new XMLHttpRequest();
     xhr.open('GET', rolesListUrl);
@@ -257,14 +224,6 @@ createUserForm.addEventListener('submit', (e) => {
             });
         }
     }
-    const user = {
-        firstname: firstnameById.value,
-        lastname: lastnameById.value,
-        age: ageById.value,
-        username: usernameById.value,
-        password: passwordById.value,
-        roles: roles
-    };
 
     fetch(createUserUrl, {
         method: 'POST',
@@ -283,16 +242,7 @@ createUserForm.addEventListener('submit', (e) => {
         .then(res => res.json())
         .then(data => {
             const dataArr = []
-            // const id = data.id
-            // dataArr.push(id)
-            dataArr.push ({
-                id : data.id,
-                firstname : data.firstname,
-                lastname : data.lastname,
-                age : data.age,
-                username : data.username,
-                role : data.roles
-            })
+            dataArr.push(data)
             listAllUsers(dataArr)
             createUserForm.reset()
             $('[href="#nav-home"]').tab('show');
